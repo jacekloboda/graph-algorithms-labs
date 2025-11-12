@@ -1,6 +1,8 @@
 import sys
 import os
-from ..graphs.dimacs import *
+current_dir = os.path.dirname(os.path.abspath(__file__))
+path_to_graph = os.path.join(current_dir, "graphs01", "g1")
+from graphs01.dimacs import *
 
 class Node():
     def __init__(self):
@@ -46,7 +48,7 @@ def dfs(G, s, t):
     return W[t]
 
 def solve():
-    n, G = loadWeightedGraph("g1")
+    n, G = loadWeightedGraph(path_to_graph)
     n+=1
     E = []
     V = [Node() for _ in range(n)]
@@ -60,12 +62,14 @@ def solve():
             union(V[u], V[v])
 
     min_wgt = dfs(MST, 1, 2)
-    print(min_wgt)
+    #print(min_wgt)
     return min_wgt
 
-solve()
-readSolution("g1")
-print(solve()==readSolution("g1"))
+print("solved: ", solve())
+print("expected: ", readSolution(path_to_graph))
+print(solve()==readSolution(path_to_graph))
+
+
 
 
 
