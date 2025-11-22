@@ -61,10 +61,11 @@ def solve():
             union(V[u], V[v])
 
     min_wgt = dfs(MST, 1, 2)
+    #print(min_wgt)
     return min_wgt
 
-print(solve())
-readSolution("g1")
-print(solve()==readSolution("g1"))
+print("solved: ", solve())
+print("expected: ", readSolution(path_to_graph))
+print(solve()==readSolution(path_to_graph))
 
 
