@@ -3,7 +3,7 @@ import os
 from time import time
 
 def check1(f):
-    dir = os.listdir("graphs-lab2/flow")
+    dir = os.listdir("lab2/flow")
 
     for i in range(len(dir)):
         if dir[i] == "grid100x100":
@@ -14,13 +14,17 @@ def check1(f):
     i = 0
     a = time()
     for graph in dir:
-        n, E = loadDirectedWeightedGraph("graphs-lab2/flow/" + graph)
+        if graph == "grid100x100": continue
+        n, E = loadDirectedWeightedGraph("lab2/flow/" + graph)
+        print(graph)
+        time1 = time()
         result = f(E)
-        sol = int(readSolution("graphs-lab2/flow/" + graph))
+        time2 = time() - time1
+        sol = int(readSolution("lab2/flow/" + graph))
         if result == sol:
-            print("Test " + str(i) + ": Passed")
+            print("Test " + str(i) + ": Passed, in  %.2f" % time2)
         else:
-            print("Test " + str(i) + ": WRONG answer, result = " + str(result) + ", should be: " + str(sol))
+            print("Test " + str(i) + ": WRONG answer, result = " + str(result) + ", should be: " + str(sol) + ", in %.2f" % time2)
         i += 1
     
     print("Time: " + str(time() - a) + " s")

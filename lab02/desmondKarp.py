@@ -1,39 +1,42 @@
 from checker import check1
+from collections import deque
+
 
 def edgesToMatrix(E):
     n = 0
-    
     for u, v, _ in E:
-        n = max(n, u, v)
-    
+        n = max(n, u ,v)
+
     M = [[0 for _ in range(n)] for _ in range(n)]
+    
     for u, v, w in E:
-        u-=1
-        v-=1
-        M[u][v] = w;
+        u -= 1 
+        v -= 1
+        M[u][v] = w
 
     return M
 
-def dfs(M, Parents, s, t):
+
+def bfs(M, Parents, s, t):
     n = len(M)
     V = [False for _ in range(n)]
-    
-    def dfs_visit(u, parent):
-        nonlocal t
-        nonlocal n
-        V[u] = True
-        Parents[u] = parent
-        if u == t:
-            return True
+    V[s] = True
+    Q = deque()
+    Q.append(s)
+
+    while Q:
+        u = Q.popleft() 
 
         for v in range(n):
             if M[u][v] and not V[v]:
-                dfs_vist(v, u)
+                V[v] = True
+                Parents[v] = u
+                Q.append(v)
 
-    dfs_vist(s, -1)
     return V[t]
 
-def fordFulkerson(E):
+
+def desmondKarp(E):
     M = edgesToMatrix(E)
     n = len(M)
     s = 0
@@ -41,7 +44,7 @@ def fordFulkerson(E):
     Parents = [-1 for _ in range(n)]
     maxFlow = 0
 
-    while dfs(M, parents, s, t):
+    while bfs(M, Parents, s, t):
         pathFlow = float("inf")
         u = t
         while u != s:
@@ -50,7 +53,6 @@ def fordFulkerson(E):
             u = parent
 
         maxFlow += pathFlow
-
         u = t
         while u != s:
             parent = Parents[u]
@@ -60,14 +62,5 @@ def fordFulkerson(E):
 
     return maxFlow
 
-check1(fordFulkerson)
 
-
-
-
-    
-    
-    
-
-    
-
+check1(desmondKarp)

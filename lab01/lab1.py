@@ -1,6 +1,7 @@
 import sys
 import os
-from ..graphs.dimacs import *
+from dimacs import *
+graph = "graphs-lab1/g1"
 
 class Node():
     def __init__(self):
@@ -46,7 +47,7 @@ def dfs(G, s, t):
     return W[t]
 
 def solve():
-    n, G = loadWeightedGraph("g1")
+    n, G = loadWeightedGraph('g1')
     n+=1
     E = []
     V = [Node() for _ in range(n)]
@@ -60,15 +61,10 @@ def solve():
             union(V[u], V[v])
 
     min_wgt = dfs(MST, 1, 2)
-    print(min_wgt)
     return min_wgt
 
-solve()
+print(solve())
 readSolution("g1")
 print(solve()==readSolution("g1"))
-
-
-
-    
 
 

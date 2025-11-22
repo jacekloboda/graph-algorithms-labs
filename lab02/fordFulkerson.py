@@ -1,4 +1,5 @@
 from checker import check1
+from collections import deque
 
 def edgesToMatrix(E):
     n = 0
@@ -61,13 +62,3 @@ def fordFulkerson(E):
     return maxFlow
 
 check1(fordFulkerson)
-
-
-
-
-    
-    
-    
-
-    
-
