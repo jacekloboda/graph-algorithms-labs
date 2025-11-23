@@ -13,7 +13,8 @@ def edgesToMatrix(E):
     for u, v, w in E:
         u -= 1 
         v -= 1
-        M[u][v] = w
+        M[u][v] = 1
+        M[v][u] = 1
 
     return M
 
@@ -33,6 +34,8 @@ def bfs(M, Parents, s, t):
                 V[v] = True
                 Parents[v] = u
                 Q.append(v)
+                if v == t:
+                    return True
 
     return V[t]
 
