@@ -1,5 +1,6 @@
 from checker import check2
 from collections import deque
+import copy
 
 
 def edgesToMatrix(E):
@@ -36,10 +37,9 @@ def bfs(M, Parents, s, t):
     return V[t]
 
 
-def desmondKarp(M):
+def desmondKarp(M_, s, t):
+    M = copy.deepcopy(M_)
     n = len(M)
-    s = 0
-    t = n-1
     Parents = [-1 for _ in range(n)]
     maxFlow = 0
 
@@ -65,10 +65,10 @@ def menger(E):
     M = edgesToMatrix(E)
     n = len(M)
 
-    min_amount = n*n
+    min_amount = float("inf")
 
     for t in range (1, n):
-        min_amount  = min(min_amount, desmondKarp(M))
+        min_amount  = min(min_amount, desmondKarp(M, 0, t))
 
     return min_amount
 
