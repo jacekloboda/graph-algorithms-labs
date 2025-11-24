@@ -2,6 +2,7 @@ from checker import check2
 from collections import deque
 import copy
 
+#test
 
 def edgesToMatrix(E):
     n = 0
