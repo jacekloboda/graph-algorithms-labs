@@ -2,7 +2,7 @@ from checker import check1
 from collections import deque
 
 
-ef edgesToMatrix(E):
+def edgesToMatrix(E):
     n = 0
     
     for u, v, _ in E:

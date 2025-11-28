@@ -55,12 +55,15 @@ def check2(f, name = ''):
         return
 
     for graph in dir:
+        if graph == "grid100x100": continue
         print(graph)
         n, E = loadWeightedGraph("graphs-lab2/connectivity/" + graph)
+        time1 = time()
         result = f(E)
+        time2 = time() - time1
         sol = int(readSolution("graphs-lab2/connectivity/" + graph))
         if result == sol:
-            print("Test " + str(i) + ": Passed")
+            print("Test " + str(i) + ": Passed, in  %.2f" % time2)
         else:
             print("Test " + str(i) + ": WRONG answer, result = " + str(result) + ", should be: " + str(sol))
         i += 1

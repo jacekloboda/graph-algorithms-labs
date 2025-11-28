@@ -2,8 +2,6 @@ from checker import check2
 from collections import deque
 import copy
 
-#test
-
 def edgesToMatrix(E):
     n = 0
     for u, v, _ in E:
@@ -11,7 +9,7 @@ def edgesToMatrix(E):
 
     M = [[0 for _ in range(n)] for _ in range(n)]
     
-    for u, v, w in E:
+    for u, v, _ in E:
         u -= 1 
         v -= 1
         M[u][v] = 1
