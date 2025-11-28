@@ -36,7 +36,7 @@ def bfs(M, Parents, s, t):
     return V[t]
 
 
-def desmondKarp(E):
+def edmondsKarp(E):
     M = edgesToMatrix(E)
     n = len(M)
     s = 0
@@ -63,4 +63,4 @@ def desmondKarp(E):
     return maxFlow
 
 
-check1(desmondKarp)
+check1(edmondsKarp)
