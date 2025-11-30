@@ -2,15 +2,16 @@ from checker import check2
 from collections import deque
 import copy
 
+
 def edgesToMatrix(E):
     n = 0
     for u, v, _ in E:
-        n = max(n, u ,v)
+        n = max(n, u, v)
 
     M = [[0 for _ in range(n)] for _ in range(n)]
-    
+
     for u, v, _ in E:
-        u -= 1 
+        u -= 1
         v -= 1
         M[u][v] = 1
         M[v][u] = 1
@@ -26,7 +27,7 @@ def bfs(M, Parents, s, t):
     Q.append(s)
 
     while Q:
-        u = Q.popleft() 
+        u = Q.popleft()
 
         for v in range(n):
             if M[u][v] and not V[v]:
@@ -63,15 +64,17 @@ def desmondKarp(M_, s, t):
 
     return maxFlow
 
+
 def menger(E):
     M = edgesToMatrix(E)
     n = len(M)
 
     min_amount = float("inf")
 
-    for t in range (1, n):
-        min_amount  = min(min_amount, desmondKarp(M, 0, t))
+    for t in range(1, n):
+        min_amount = min(min_amount, desmondKarp(M, 0, t))
 
     return min_amount
+
 
 check2(menger)
