@@ -5,12 +5,12 @@ from collections import deque
 def edgesToMatrix(E):
     n = 0
     for u, v, _ in E:
-        n = max(n, u ,v)
+        n = max(n, u, v)
 
     M = [[0 for _ in range(n)] for _ in range(n)]
-    
+
     for u, v, w in E:
-        u -= 1 
+        u -= 1
         v -= 1
         M[u][v] = w
 
@@ -25,7 +25,7 @@ def bfs(M, Parents, s, t):
     Q.append(s)
 
     while Q:
-        u = Q.popleft() 
+        u = Q.popleft()
 
         for v in range(n):
             if M[u][v] and not V[v]:
@@ -40,7 +40,7 @@ def edmondsKarp(E):
     M = edgesToMatrix(E)
     n = len(M)
     s = 0
-    t = n-1
+    t = n - 1
     Parents = [-1 for _ in range(n)]
     maxFlow = 0
 
