@@ -1,89 +1,39 @@
 from data import runtests
 from collections import defaultdict, deque
 from math import log
+from sympy.ntheory import factorint
 
-# scores = [(6, 5), (9, 1), (10, 6), (15, 7), (13, 6), (17, 5)]
-primes = []
-
-
-def prime_factors(n, global_dict):
-    divider_dict = defaultdict(int)
-    ind = 0
-
-    while n > 1:
-        prime = primes[ind]
-        if n % prime == 0:
-            divider_dict[prime] += 1
-            global_dict[prime] = max(global_dict[prime], divider_dict[prime])
-            n //= primes[ind]
-        else:
-            ind += 1
-
-    return divider_dict
+scores = [(6, 5), (9, 1), (10, 6), (15, 7), (13, 6), (17, 5)]
 
 
 def gen_res_graph(scores):
-    global_dict = defaultdict(int)
-    factors = []
+    M = defaultdict(lambda: defaultdict(int))
 
-    for divider, _ in scores:
-        # for updating global dict
-        factors.append(prime_factors(divider, global_dict))
+    for divider, luck in scores:
+        prev = (0, 0)  # (0, 0) - sink, (1, 0) - hole
+        factors = factorint(divider)
+        for factor, cnt in factors.items():
+            for i in range(1, cnt + 1):
+                M[prev][(factor, i)] += luck
+                prev = (factor, i)
+        M[prev][(1, 0)] += luck
 
-    n = sum(map(lambda x: x[1], global_dict.items()))
-    n += 2
-    # 0th node is sink - s
-    # (n-1)th node is hole - t
-
-    ind_dict = {}  # index of node (x, cnt) in M
-    ind = 1
-    ind_val = [1 for _ in range(n)]
-    for factor, cnt in global_dict.items():
-        while cnt > 0:
-            ind_dict[(factor, cnt)] = ind
-            ind_val[ind] = factor
-            cnt -= 1
-            ind += 1
-
-    M = [[0.0 for _ in range(n)] for _ in range(n)]
-
-    for i in range(len(scores)):
-        divider, wgt = scores[i]
-        divider_dict = factors[i]
-
-        prev_ind = 0
-        for factor, cnt in divider_dict.items():
-            tmp_cnt = 1
-            while tmp_cnt <= cnt:
-                ind = ind_dict[(factor, tmp_cnt)]
-                M[prev_ind][ind] += wgt
-                tmp_cnt += 1
-                prev_ind = ind
-
-        M[prev_ind][n - 1] += wgt
-
-    #    for row in M:
-    #        print(row)
-    #
-    #    for item in ind_dict.items():
-    #        print(item)
-
-    return M, ind_val
+    for u, dict in M.items():
+        print(u, dict)
 
 
 def bfs(M, Parents, s, t):
-    n = len(M)
-    V = [False for _ in range(n)]
-    V[s] = True
+    V = defaultdict(int)
+    V[s] = 1
     Q = deque()
     Q.append(s)
 
     while Q:
         u = Q.popleft()
 
-        for v in range(n):
+        for v, wgt in M[u].items():
             if M[u][v] > 0 and not V[v]:
-                V[v] = True
+                V[v] = 1
                 Parents[v] = u
                 Q.append(v)
 
@@ -91,11 +41,10 @@ def bfs(M, Parents, s, t):
 
 
 def solve(scores):
-    M, ind_val = gen_res_graph(scores)
-    n = len(M)
-    s = 0
-    t = n - 1
-    Parents = [-1 for _ in range(n)]
+    M = gen_res_graph(scores)
+    s = (0, 0)
+    t = (1, 0)
+    Parents = {}
     maxFlow = 0
     used_ind = set()
 
@@ -105,7 +54,7 @@ def solve(scores):
         u = t
         while u != s:
             parent = Parents[u]
-            log_val *= ind_val[u]
+            log_val *= u[0]
             pathFlow = min(pathFlow, M[parent][u])
             u = parent
 
@@ -121,15 +70,13 @@ def solve(scores):
             M[parent][u] -= pathFlow
             M[u][parent] += pathFlow
             u = parent
-            path.append(u)
 
         if found_path:
             for node in path:
                 used_ind.add(node)
     res = 1
     for ind in used_ind:
-        # print(ind, ind_val[ind])
-        res *= ind_val[ind]
+        res *= ind[0]
     return res
 
 
