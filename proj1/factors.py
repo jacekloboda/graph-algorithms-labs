@@ -173,3 +173,6 @@ def gcd(a, b):
 
 def lcm(a, b):
     return abs((a // gcd(a, b)) * b)
+
+
+print(primefactors(24))
